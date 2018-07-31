@@ -29,14 +29,16 @@ function shamazon() {
 
 function displaystore() {
     console.log("this function displays the store");
-    // connection.query("SHOWING ALL PRODUCTS", function(err, res) {
-    //     if (err) throw err;
-    //     console.log(res);
-    //     connection.end();
-    //     }); 
     connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
-    console.log(res);
+    console.log("-------------------------------------- ♨(⋆‿⋆)♨ --------------------------------------");
+    console.log("Welcome to Shamazon: A Database of Products Which Is Definitely Not Ripping Off Amazon");
+    console.log("-------------------------------------- ♨(⋆‿⋆)♨ --------------------------------------");
+    for (var i = 0; i < res.length; i++) {
+        console.log("ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: " + res[i].price);
+    }
+//    console.log(res);
+    console.log("-------------------------------------- ♨(⋆‿⋆)♨ --------------------------------------");
     console.log("are you happy now?");
     });
 // 5. Running this application will first display all of the items available for sale. Include the ids, names, and prices of products for sale.
@@ -44,7 +46,13 @@ function displaystore() {
 }
 
 function whatwouldyouliketobuy() {
-    console.log("A CUSTOMER!!! Wait! What's your rush, what's your hurry? You gave me such I fright! I thought you was a ghost!");
+//    console.log("A CUSTOMER!!! Wait! What's your rush, what's your hurry? You gave me such I fright! I thought you was a ghost!");
+//    console.log("Now!  What would you like to buy?");
+    inquirer.prompt ({
+        name: "userbuy",
+        type: "input",
+        message: "Now!  What would you like to buy?"
+    })
 // 6. The app should then prompt users with two messages.
 //    * The first should ask them the ID of the product they would like to buy.
 //    * The second message should ask how many units of the product they would like to buy.
