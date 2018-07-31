@@ -11,8 +11,8 @@ var connection = mysql.createConnection({
     user: "root",
   
     // Your password
-    password: "",
-    database: "topsongs_DB"
+    password: "",                   // ------------------- remember to add password when running app! -------- //
+    database: "shamazon_db"
   });
   
   connection.connect(function(err) {
@@ -29,6 +29,16 @@ function shamazon() {
 
 function displaystore() {
     console.log("this function displays the store");
+    // connection.query("SHOWING ALL PRODUCTS", function(err, res) {
+    //     if (err) throw err;
+    //     console.log(res);
+    //     connection.end();
+    //     }); 
+    connection.query("SELECT * FROM products", function (err, res) {
+    if (err) throw err;
+    console.log(res);
+    console.log("are you happy now?");
+    });
 // 5. Running this application will first display all of the items available for sale. Include the ids, names, and prices of products for sale.
     whatwouldyouliketobuy();
 }
