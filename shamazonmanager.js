@@ -57,37 +57,81 @@ function options() {
 }
 
 function viewproducts() {
-    console.log("view products");
-// * If a manager selects `View Products for Sale`, the app should list every available item: the item IDs, names, prices, and quantities.
+    console.log("VIEW ALL PRODUCTS");
+    connection.query("SELECT * FROM products", function (err, res) {
+    if (err) throw err;
+    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    for (var i = 0; i < res.length; i++) {
+        console.log("ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: " + res[i].price + " | Quantity: " + res[i].stock_quantity);
+    }
+    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    console.log("Please press the down-arrow to continue.");
+    });
+    // * If a manager selects `View Products for Sale`, the app should list every available item: the item IDs, names, prices, and quantities.
+    options();
 }
 
 function viewlowinv() {
-    console.log("view products");
+    console.log("VIEW LOW INVENTORY");
+    connection.query("SELECT * FROM products", function (err, res) {
+    if (err) throw err;
+    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    for (var i = 0; i < res.length; i++) {
+        if (res[i].stock_quantity < 5) {
+        console.log("ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: " + res[i].price + " | Quantity: " + res[i].stock_quantity);
+        }
+    }
+    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    console.log("Please press the down-arrow to continue.");
+    });
+    options();
 // * If a manager selects `View Low Inventory`, then it should list all items with an inventory count lower than five.
 }
 
 function addinv() {
-    console.log("view products");
-// * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store.
+    console.log("ADD TO INVENTORY");
+    connection.query("UPDATE products SET ? WHERE ?", 
+    [
+        {
+            product_name:
+        },
+        {
+            stock_quantity: ""
+        }
+    ]
+    
+    function (err, res) {
+    if (err) throw err;
+    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    for (var i = 0; i < res.length; i++) {
+        if (res[i].stock_quantity < 5) {
+        console.log("ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: " + res[i].price + " | Quantity: " + res[i].stock_quantity);
+        }
+    }
+    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    console.log("Please press the down-arrow to continue.");
+    });
+    options();
+    // * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store.
 }
 
 function addproduct() {
-    console.log("view products");
-// * If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
+    console.log("add new products");
+    console.log("ADD NEW PRODUCTS");
+    connection.query("ALTER TABLE shamazon_db.products ADD ?", function (err, res) {
+    if (err) throw err;
+    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    for (var i = 0; i < res.length; i++) {
+        if (res[i].stock_quantity < 5) {
+        console.log("ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: " + res[i].price + " | Quantity: " + res[i].stock_quantity);
+        }
+    }
+    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    console.log("Please press the down-arrow to continue.");
+    });
+    options();
+
+    // * If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
 }
 
-// function viewproducts() {
-//     console.log("View all products");
-//     connection.query("SELECT * FROM products", function (err, res) {
-//     if (err) throw err;
-//     console.log("-------------------------------------- ♨(⋆‿⋆)♨ --------------------------------------");
-//     console.log("Welcome to Shamazon: A Database of Products Which Is Definitely Not Ripping Off Amazon");
-//     console.log("-------------------------------------- ♨(⋆‿⋆)♨ --------------------------------------");
-//     for (var i = 0; i < res.length; i++) {
-//         console.log("ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: " + res[i].price + " | Quantity: " + res[i].stock_quantity);
-//     }
-// //    console.log(res);
-//     console.log("-------------------------------------- ♨(⋆‿⋆)♨ --------------------------------------");
-//     });
-// }
 
