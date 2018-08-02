@@ -1,6 +1,7 @@
 var mysql = require("mysql");
 var inquirer= require("inquirer");
 
+
 var connection = mysql.createConnection({
     host: "localhost",
   
@@ -19,13 +20,11 @@ var connection = mysql.createConnection({
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
 
-    // shamazon();  
     displaystore();
 });
 
-// function shamazon() {
-//     console.log("it's working!");
-// }
+var customerwantsthis = 0;
+var howmanyofthis = 0;
 
 function displaystore() {
     console.log("DISPLAY STORE");
@@ -39,14 +38,11 @@ function displaystore() {
     }
 //    console.log(res);
     console.log("-------------------------------------- ♨(⋆‿⋆)♨ --------------------------------------");
-    console.log("are you happy now?");
+    console.log("Please press the Down Arrow to continue.");
     });
 // 5. Running this application will first display all of the items available for sale. Include the ids, names, and prices of products for sale.
     whatwouldyouliketobuy();
 }
-
-var customerwantsthis = 0;
-var howmanyofthis = 0;
 
 function whatwouldyouliketobuy() {
 //    console.log("A CUSTOMER!!! Wait! What's your rush, what's your hurry? You gave me such I fright! I thought you was a ghost!");
@@ -83,14 +79,24 @@ function whatwouldyouliketobuy() {
 }
 
 function checkproduct() {
-
-    // 7. Once the customer has placed the order, your application should check 
+    connection.query("SELECT * FROM products", function (err, res) {
+        if (err) throw err;
+        for (var i = 0; i < res.length; i++) {
+            if (i !== customerwantsthis) {
+                console.log("That item is out of stock!");
+            } else {
+                console.log("That item is in stock!");
+                console.log("Your " + res[i].product_name + " will be " + (res[i].price * howmanyofthis) + ".")
+                console.log("Please pay.");
+            }
+        }
+    });
+// 7. Once the customer has placed the order, your application should check 
 //      if your store has enough of the product to meet the customer's request.
 //    * If not, the app should log a phrase like `Insufficient quantity!`, and then prevent the order from going through.
 // 8. However, if your store _does_ have enough of the product, you should fulfill the customer's order.
 //    * This means updating the SQL database to reflect the remaining quantity.
 //    * Once the update goes through, show the customer the total cost of their purchase.
-
 }
 
 

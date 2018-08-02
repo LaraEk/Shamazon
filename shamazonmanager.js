@@ -19,13 +19,8 @@ var connection = mysql.createConnection({
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
 
-    // shamazon();  
     options();
 });
-
-// function shamazon() {
-//     console.log("it's working!");
-// }
 
 function options() {
     inquirer
@@ -90,30 +85,56 @@ function viewlowinv() {
 
 function addinv() {
     console.log("ADD TO INVENTORY");
-    connection.query("UPDATE products SET ? WHERE ?", 
-    [
+    inquirer
+      .prompt([
         {
-            product_name: ""
+        type: "input",
+        message: "What product would you like to add to?",
+        name: "addinventory"
         },
         {
-            stock_quantity: ""
+        type: "input",
+        message: "How many would you like to add?",
+        name: "howmanyadd"
+        },
+        {
+        type: "confirm",
+        message: "Are you sure:",
+        name: "confirm",
+        default: true
         }
-    ]
-    
-    function (err, res) {
-    if (err) throw err;
-    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
-    for (var i = 0; i < res.length; i++) {
-        if (res[i].stock_quantity < 5) {
-        console.log("ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: " + res[i].price + " | Quantity: " + res[i].stock_quantity);
-        }
-    }
-    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
-    console.log("Please press the down-arrow to continue.");
-    });
+    ]).then(function(addinvresponse) {
+        console.log("you added " + addinvresponse.howmanyadd + addinvresponse.addinventory + "s!");
+        var addinvquery = connection.query("UPDATE products SET ? WHERE ?", 
+        [
+            {
+                product_name: addinvresponse.addinventory
+            },
+            {
+                stock_quantity: addinvresponse.howmanyadd
+            }
+        ]
+        function(err, res) {
+            console.log("you definitely added " + addinvresponse.howmanyadd + addinvresponse.addinventory + "s!");
+        });
+    console.log(addinvquery.sql);
     options();
     // * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store.
-}
+});
+}        
+
+    
+    // function (err, res) {
+    // if (err) throw err;
+    // console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    // for (var i = 0; i < res.length; i++) {
+    //     if (res[i].stock_quantity < 5) {
+    //     console.log("ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: " + res[i].price + " | Quantity: " + res[i].stock_quantity);
+    //     }
+    // }
+    // console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
+    // console.log("Please press the down-arrow to continue.");
+
 
 function addproduct() {
     console.log("add new products");
