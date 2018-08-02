@@ -19,13 +19,13 @@ var connection = mysql.createConnection({
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
 
-    shamazon();  
+    // shamazon();  
     options();
 });
 
-function shamazon() {
-    console.log("it's working!");
-}
+// function shamazon() {
+//     console.log("it's working!");
+// }
 
 function options() {
     inquirer
@@ -93,7 +93,7 @@ function addinv() {
     connection.query("UPDATE products SET ? WHERE ?", 
     [
         {
-            product_name:
+            product_name: ""
         },
         {
             stock_quantity: ""

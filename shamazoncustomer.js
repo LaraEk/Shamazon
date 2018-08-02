@@ -19,16 +19,16 @@ var connection = mysql.createConnection({
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
 
-    shamazon();  
+    // shamazon();  
     displaystore();
 });
 
-function shamazon() {
-    console.log("it's working!");
-}
+// function shamazon() {
+//     console.log("it's working!");
+// }
 
 function displaystore() {
-    console.log("this function displays the store");
+    console.log("DISPLAY STORE");
     connection.query("SELECT * FROM products", function (err, res) {
     if (err) throw err;
     console.log("-------------------------------------- ♨(⋆‿⋆)♨ --------------------------------------");
@@ -45,10 +45,13 @@ function displaystore() {
     whatwouldyouliketobuy();
 }
 
+var customerwantsthis = 0;
+var howmanyofthis = 0;
+
 function whatwouldyouliketobuy() {
 //    console.log("A CUSTOMER!!! Wait! What's your rush, what's your hurry? You gave me such I fright! I thought you was a ghost!");
-//    console.log("Now!  What would you like to buy?");
-    inquirer.prompt ({
+    inquirer
+    .prompt ([{
         type: "input",
         name: "userbuy",
         message: "Now, please type the ID number of the object you would like to buy!"
@@ -57,16 +60,31 @@ function whatwouldyouliketobuy() {
         type: "input",
         name: "howmany",
         message: "How many would you like to buy?"
-    }).then(function(inquireresponse){
+    },
+    {
+        type: "confirm",
+        message: "Confirm order:",
+        name: "confirm",
+        default: true
+    }
+    ]).then(function(inquireresponse){        
         if (inquireresponse.confirm) {
-            console.log("you want " + inquireresponse.howmany + " of these " + inquireresponse.userbuy + "s!")
+            console.log("you want " + inquireresponse.howmany + " of Item # " + inquireresponse.userbuy + "!")
+            customerwantsthis = inquireresponse.userbuy;
+            howmanyofthis = inquireresponse.howmany;
+            console.log(customerwantsthis);
+            console.log(howmanyofthis);
         }
-
     });
 //-- 6. The app should then prompt users with two messages.
 //--    * The first should ask them the ID of the product they would like to buy.
 //--    * The second message should ask how many units of the product they would like to buy.
-// 7. Once the customer has placed the order, your application should check 
+    checkproduct();
+}
+
+function checkproduct() {
+
+    // 7. Once the customer has placed the order, your application should check 
 //      if your store has enough of the product to meet the customer's request.
 //    * If not, the app should log a phrase like `Insufficient quantity!`, and then prevent the order from going through.
 // 8. However, if your store _does_ have enough of the product, you should fulfill the customer's order.
@@ -74,8 +92,6 @@ function whatwouldyouliketobuy() {
 //    * Once the update goes through, show the customer the total cost of their purchase.
 
 }
-
-
 
 
 
