@@ -11,7 +11,7 @@ var connection = mysql.createConnection({
     user: "root",
   
     // Your password
-    password: "",                   // ------------------- remember to add password when running app! -------- //
+    password: "", // (use an .env file!)  // ----------- remember to add password when running app! -------- //
     database: "shamazon_db"
   });
   
