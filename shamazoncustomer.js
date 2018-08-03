@@ -81,15 +81,24 @@ function whatwouldyouliketobuy() {
 function checkproduct() {
     connection.query("SELECT * FROM products", function (err, res) {
         if (err) throw err;
+        var found = false;
+        var foundi = 0;
         for (var i = 0; i < res.length; i++) {
-            if (i !== customerwantsthis) {
-                console.log("That item is out of stock!");
-            } else {
-                console.log("That item is in stock!");
-                console.log("Your " + res[i].product_name + " will be " + (res[i].price * howmanyofthis) + ".")
-                console.log("Please pay.");
+            if (res[i].item_id === customerwantsthis) {
+                foundi = i;
+                found = true;
             }
         }
+        if (found == true) {
+            console.log("That item is in stock!");
+            console.log("Your " + res[foundi].product_name + " will be " + (res[foundi].price * howmanyofthis) + ".")
+            console.log("Please pay.");
+        } else {
+            console.log("That item is out of stock!");
+
+        }
+
+        
     });
 // 7. Once the customer has placed the order, your application should check 
 //      if your store has enough of the product to meet the customer's request.

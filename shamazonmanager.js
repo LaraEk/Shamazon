@@ -105,18 +105,18 @@ function addinv() {
         }
     ]).then(function(addinvresponse) {
         console.log("you added " + addinvresponse.howmanyadd + addinvresponse.addinventory + "s!");
-        var addinvquery = connection.query("UPDATE products SET ? WHERE ?", 
-        [
+        var addinvquery = connection.query("UPDATE products SET ? WHERE ?",[
             {
                 product_name: addinvresponse.addinventory
             },
             {
                 stock_quantity: addinvresponse.howmanyadd
             }
-        ]
-        function(err, res) {
+        ]  , function(err, res) {
             console.log("you definitely added " + addinvresponse.howmanyadd + addinvresponse.addinventory + "s!");
-        });
+        }
+       
+      );
     console.log(addinvquery.sql);
     options();
     // * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store.
