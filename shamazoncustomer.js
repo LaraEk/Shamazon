@@ -23,8 +23,9 @@ var connection = mysql.createConnection({
     displaystore();
 });
 
-var customerwantsthis = 0;
+var customerwantsthis = [];
 var howmanyofthis = 0;
+var whatsthecustomerbuying = "";
 
 function displaystore() {
     console.log("DISPLAY STORE");
@@ -66,39 +67,33 @@ function whatwouldyouliketobuy() {
     ]).then(function(inquireresponse){        
         if (inquireresponse.confirm) {
             console.log("you want " + inquireresponse.howmany + " of Item # " + inquireresponse.userbuy + "!")
-            customerwantsthis = inquireresponse.userbuy;
+            customerwantsthis.push(inquireresponse.userbuy);
             howmanyofthis = inquireresponse.howmany;
             console.log(customerwantsthis);
             console.log(howmanyofthis);
+            checkproduct();
+
         }
     });
 //-- 6. The app should then prompt users with two messages.
 //--    * The first should ask them the ID of the product they would like to buy.
 //--    * The second message should ask how many units of the product they would like to buy.
-    checkproduct();
 }
 
 function checkproduct() {
-    connection.query("SELECT * FROM products", function (err, res) {
+    connection.query("SELECT * FROM products WHERE item_id = ?", customerwantsthis[0], function (err, res) {
         if (err) throw err;
-        var found = false;
-        var foundi = 0;
-        for (var i = 0; i < res.length; i++) {
-            if (res[i].item_id === customerwantsthis) {
-                foundi = i;
-                found = true;
-            }
-        }
-        if (found == true) {
-            console.log("That item is in stock!");
-            console.log("Your " + res[foundi].product_name + " will be " + (res[foundi].price * howmanyofthis) + ".")
-            console.log("Please pay.");
-        } else {
+        console.log(customerwantsthis);
+        whatsthecustomerbuying = res[0].product_name;
+        console.log(whatsthecustomerbuying);
+
+        if (howmanyofthis <= res.stock_quantity) {
             console.log("That item is out of stock!");
-
-        }
-
-        
+        } else {
+            console.log("That item is in stock!");
+            console.log("Your " + whatsthecustomerbuying + " will be " + (res[0].price * howmanyofthis) + ".")
+            console.log("Please pay.");
+        }        
     });
 // 7. Once the customer has placed the order, your application should check 
 //      if your store has enough of the product to meet the customer's request.
