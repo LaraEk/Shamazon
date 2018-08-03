@@ -137,22 +137,46 @@ function addinv() {
 
 
 function addproduct() {
-    console.log("add new products");
     console.log("ADD NEW PRODUCTS");
     connection.query("ALTER TABLE shamazon_db.products ADD ?", function (err, res) {
-    if (err) throw err;
-    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
-    for (var i = 0; i < res.length; i++) {
-        if (res[i].stock_quantity < 5) {
-        console.log("ID: " + res[i].item_id + " | Product: " + res[i].product_name + " | Price: " + res[i].price + " | Quantity: " + res[i].stock_quantity);
-        }
-    }
-    console.log("------------------------------ ƪ(`▿▿▿▿´ƪ) ------------------------------");
-    console.log("Please press the down-arrow to continue.");
+        console.log("ADD TO INVENTORY");
+        inquirer
+          .prompt([
+            {
+            type: "input",
+            message: "What product would you like to add to?",
+            name: "addinventory"
+            },
+            {
+            type: "input",
+            message: "How many would you like to add?",
+            name: "howmanyadd"
+            },
+            {
+            type: "confirm",
+            message: "Are you sure:",
+            name: "confirm",
+            default: true
+            }
+        ]).then(function(addinvresponse) {
+            console.log("you added " + addinvresponse.howmanyadd + addinvresponse.addinventory + "s!");
+            var addinvquery = connection.query("UPDATE products SET ? WHERE ?",[
+                {
+                    product_name: addinvresponse.addinventory
+                },
+                {
+                    stock_quantity: addinvresponse.howmanyadd
+                }
+            ]  , function(err, res) {
+                console.log("you definitely added " + addinvresponse.howmanyadd + addinvresponse.addinventory + "s!");
+            }
+           
+          );
+        console.log(addinvquery.sql);
+        options();
+        // * If a manager selects `Add to Inventory`, your app should display a prompt that will let the manager "add more" of any item currently in the store.
     });
-    options();
-
-    // * If a manager selects `Add New Product`, it should allow the manager to add a completely new product to the store.
-}
+    });        
+}    
 
 
